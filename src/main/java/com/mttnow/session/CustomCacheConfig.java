@@ -25,6 +25,9 @@ public class CustomCacheConfig implements CachingConfigurer {
 	private String cacheAddress;
 
 	private RedissonClient redisson() {
+		System.out.println("\n\n\n*********************");
+		System.out.println("CacheAddress: " + cacheAddress);
+		System.out.println("*********************\n\n\n\n");
 		Config config = new Config();
 		config.useSingleServer().setAddress(cacheAddress);
 		return Redisson.create(config);
