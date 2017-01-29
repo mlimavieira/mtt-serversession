@@ -1,5 +1,7 @@
 package com.mttnow.session.mongo.model;
 
+import java.io.Serializable;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -8,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 // @CompoundIndex(name = "idx_name_desc", def = "{'name': 1, 'descri': 1}",
 // unique=true)
 // })
-public class Beer {
+public class Beer implements Serializable {
 
 	@Id
 	private String id;
@@ -16,11 +18,6 @@ public class Beer {
 	// @Indexed(unique = true)
 	private String name;
 	private String description;
-
-	public Beer() {
-		
-		System.out.println("TESTE" );
-	}
 
 	public String getId() {
 		return id;
