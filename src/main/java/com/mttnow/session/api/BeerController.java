@@ -31,6 +31,20 @@ public class BeerController {
 	@Autowired
 	private BeerRepository beerRepository;
 
+	@Autowired
+	private CacheManager cacheManager;
+	
+	@RequestMapping(path = "/beer/flush-cache", method = RequestMethod.POST)
+	public void flushCache() {
+
+		Collection<String> cacheNames = cacheManager.getCacheNames();
+		for (String cacheName : cacheNames) {
+			Cache cache = cacheManager.getCache(cacheName);
+			cache.clear();
+		}
+
+	}
+
 	@Cacheable(cacheNames = "beerResult", unless = "#result != null and #result.size() == 0")
 	@ApiOperation(value = "getBeers", nickname = "getBeers")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success", response = Beer[].class),
