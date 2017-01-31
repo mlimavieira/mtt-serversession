@@ -1,7 +1,8 @@
 package com.mttnow.session;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
@@ -17,8 +18,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 //@EnableCaching
 public class CustomJedisCacheConfig extends CachingConfigurerSupport {
 
-	private static final Logger LOG = LoggerFactory.getLogger(CustomJedisCacheConfig.class);
-	private static final Long ONE_SECOND = 60 * 1000L;
 
 	@Value("${custom.spring.cache.hostName}")
 	private String cacheHostName;
@@ -47,7 +46,12 @@ public class CustomJedisCacheConfig extends CachingConfigurerSupport {
 	@Bean
 	public CacheManager cacheManager(RedisTemplate<String, String> redisTemplate) {
 		RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate);
-		cacheManager.setDefaultExpiration(60 * ONE_SECOND);
+		cacheManager.setDefaultExpiration(60000);
+		
+		Map<String, Long> expirationConfig = new HashMap<>();
+		expirationConfig.put("mmb-cache", 30000L);
+		cacheManager.setExpires(expirationConfig);
+		
 		return cacheManager;
 	}
 }

@@ -22,12 +22,13 @@ import org.springframework.context.annotation.Configuration;
 public class CustomRedissonCacheConfig extends CachingConfigurerSupport {
 
 	private static final Logger LOG = LoggerFactory.getLogger(CustomRedissonCacheConfig.class);
-	private static final Long ONE_SECOND = 60 * 1000L;
 
+	
 	@Value("${custom.spring.cache.address}")
 	private String cacheAddress;
 
 	private RedissonClient redisson() {
+		LOG.info("Startin Redisson Client CacheAddress: {}", cacheAddress);
 		Config config = new Config();
 		config.useSingleServer().setAddress(cacheAddress);
 		return Redisson.create(config);
@@ -38,7 +39,8 @@ public class CustomRedissonCacheConfig extends CachingConfigurerSupport {
 	public CacheManager cacheManager() {
 		Map<String, CacheConfig> config = new HashMap<String, CacheConfig>();
 
-		config.put("beerResult", new CacheConfig(30 * ONE_SECOND, 60 * ONE_SECOND));
+		// TTL 30 seconds and MaxIdleTime 60 seconds
+		config.put("mmb-cache", new CacheConfig(30000L, 60000));
 
 		RedissonSpringCacheManager redissonSpringCacheManager = new RedissonSpringCacheManager(redisson(), config);
 

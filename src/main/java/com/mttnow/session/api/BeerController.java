@@ -34,7 +34,7 @@ public class BeerController {
 	@Autowired
 	private CacheManager cacheManager;
 	
-	@RequestMapping(path = "/beer/flush-cache", method = RequestMethod.POST)
+	@RequestMapping(path = "/flush-cache", method = RequestMethod.POST)
 	public void flushCache() {
 
 		Collection<String> cacheNames = cacheManager.getCacheNames();
