@@ -40,6 +40,7 @@ public class BeerControllerTests {
 		redisServer.stop();
 	}
 	
+	
 	@Test
 	public void getTest() {
 		Beer[] beers = restTemplate.getForObject("/beer", Beer[].class);
